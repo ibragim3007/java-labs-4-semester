@@ -40,9 +40,14 @@ public class Main {
 
     public static void Task6(int positionStart, int rows, int columns) {
         int positionChange = positionStart;
-        for (int i = 0; i <= rows; i++) {
+        System.out.print("\t");
+        for (int i = 0; i < rows; i++)
+            System.out.print(Integer.toHexString(i) + ' ');
+
+        System.out.print('\n');
+        for (int i = 0; i < columns; i++) {
             System.out.print(Integer.toHexString(positionChange) + '\t');
-            for (int j = 0; j <= columns; j++) {
+            for (int j = 0; j < rows; j++) {
                 int change = (int) (positionStart + (i * 10) + j);
                 System.out.print((char)change);
                 positionChange = change;
@@ -81,8 +86,19 @@ public class Main {
         return count;
     }
 
-    public static void Task10() {
-
+    public static void Task10(String str) {
+        char[] strChars = str.toCharArray();
+        for (int i = 0; i < strChars.length; i++) {
+            char lastSymbol = strChars[strChars.length - 1];
+            for (int j = strChars.length - 1; j > 0; j--) {
+                strChars[j] = strChars[j - 1];
+            }
+            strChars[0] = lastSymbol;
+            for (char strChar: strChars) {
+                System.out.print(strChar);
+            }
+            System.out.print("\n");
+        }
     }
 
     public static void main(String[] args) {
@@ -100,24 +116,24 @@ public class Main {
         System.out.println(Task3(10, 5, 1.0f, 7.0f));
 
         //Task4
-//        System.out.println("\nЗадание 4:");
-//        Scanner scan = new Scanner(System.in);
-//        System.out.print("Введите R: ");
-//        int R = scan.nextInt();
-//        System.out.print("Введите r: ");
-//        int r = scan.nextInt();
-//        System.out.println(Task3(R, r, 1.0f, 4.0f));
+        System.out.println("\nЗадание 4:");
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Введите R: ");
+        int R = scan.nextInt();
+        System.out.print("Введите r: ");
+        int r = scan.nextInt();
+        System.out.println(Task3(R, r, 1.0f, 4.0f));
 
         //Task5
-//        System.out.println("\nЗадание 5:");
-//        System.out.println("Введите целое десятичное число: ");
-//        int number_10 = scan.nextInt();
-//        Task5(number_10);
+        System.out.println("\nЗадание 5:");
+        System.out.println("Введите целое десятичное число: ");
+        int number_10 = scan.nextInt();
+        Task5(number_10);
 
         //Task6
         System.out.println("\nЗадание 6:");
         int start = 0x0400;
-        Task6(start, 16, 16);
+        Task6(start, 3, 23);
 
         //Task 7
         System.out.println("\nЗадание 7:" );
@@ -128,5 +144,9 @@ public class Main {
         //Task9
         System.out.println("\nЗадание 9:");
         System.out.println(Task9("Hello worldwo adald wo", "l"));
+
+        //Task10
+        System.out.println("\nЗадание 10:");
+        Task10("abcd");
     }
 }
