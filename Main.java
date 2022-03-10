@@ -1,177 +1,205 @@
 package com.company;
 
-
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
 
-    public static void Task1 () {
-        System.out.println("|Max Byte: \t\t" + Byte.MAX_VALUE + "\t\t\t\t\t\t\t|Min Byte: " + -Byte.MIN_VALUE);
-        System.out.println("|Max Short: \t" + Short.MAX_VALUE + "\t\t\t\t\t|Min Short: " + -Short.MIN_VALUE);
-        System.out.println("|Max Integer: \t" + Integer.MAX_VALUE + "\t\t\t\t\t|Min Integer: " + -Integer.MIN_VALUE);
-        System.out.println("|Max Long: \t\t" + Long.MAX_VALUE + "\t\t\t|Min Long: " + -Long.MIN_VALUE);
-        System.out.println("|Max Float: \t\t" + Float.MAX_VALUE + "\t\t\t|Min Float: " + -Float.MIN_VALUE);
-        System.out.println("|Max Double: \t" + Double.MAX_VALUE + "\t\t|Min Double: " + -Double.MIN_VALUE);
+    static void task1() {
+        double start = Math.PI / 15;
+        System.out.print("+-----------+------------------+-----------------+\n");
+        System.out.print("|     X     | Sin(x)           | e^x/x*lg(x)     |\n");
+        System.out.print("+-----------+------------------+-----------------+\n");
+        for (double x = start; x <= Math.PI; x += Math.PI / 15) {
+            String sinRound = String.format("%.7f", Math.sin(x));
+            String funRound = String.format("%.7f", Math.exp(x) / (x * Math.log(x)));
+            String argRound = String.format("%.5f", x);
+            String result = String.format("| %-10s | %-15s | %-15s |\n", argRound, sinRound, funRound);
+            System.out.print(result);
+        }
+        System.out.print("+-----------+------------------+-----------------+\n");
     }
 
-    public static Double Task2 (int[] array) {
-        int temp = 1;
-        int negative = 0;
-        for (int item : array)
-            if (item < 0) {
-                temp *= item;
-                negative++;
-            }
+    static void task2(int [][] arrayNumbers) {
+        int maxNegative = 0;
 
-        if (negative % 2 == 0)
-            return Math.pow(temp, 1.0f / negative);
+        for (int i = 0; i < arrayNumbers.length; i++)
+            for (int j = 0; j < arrayNumbers[i].length; j++)
+                if (arrayNumbers[i][j] < maxNegative)  maxNegative = arrayNumbers[i][j];
 
-        return -Math.pow(-temp, 1.0f / negative);
+        System.out.print("Max negative: " + maxNegative);
     }
 
-    public static String Task3(int R, int r, float x1, float x2) {
-        double LengthToObject = Math.sqrt(Math.pow(x1 - x2, 2));
-        if (LengthToObject > R) return "Не обнаружен";
-        else if (LengthToObject <= R && LengthToObject > r) return "Обнаружен";
-        else if (LengthToObject <= r) return "Тревога";
-        return "Error";
+    static int [] bubbleSort (int [] array) {
+        for (int i = 0; i < array.length; i++)
+            for (int j = 0; j < array.length - i - 1; j++)
+                if (array[j] > array[j+1]) {
+                    int temp = array[j+1];
+                    array[j+1] = array[j];
+                    array[j] = temp;
+                }
+        return array;
     }
 
-    public static void Task5(int number_10) {
-        System.out.println("10: " + number_10);
-        System.out.println("2: " + Integer.toBinaryString(number_10));
-        System.out.println("8: " + Integer.toOctalString(number_10));
-        System.out.println("16: " + Integer.toString(number_10, 64));
-    }
+    static void task3(int [][] arrayNumber) {
 
-    public static void Task6(int positionStart, int rows, int columns) {
-        int positionChange = positionStart;
-        System.out.print("\t");
-        for (int i = 0; i < rows; i++)
-            System.out.print(Integer.toHexString(i) + ' ');
+        System.out.print("\nМатрица до сортровки: \n");
+        for (int i = 0; i < arrayNumber.length; i++) {
+            System.out.print("|");
+            for (int j = 0; j < arrayNumber[i].length; j++)
+                System.out.print(String.format("%3s ", arrayNumber[i][j]));
+            System.out.print("| \n");
+        }
 
-        System.out.print('\n');
-        for (int i = 0; i < columns; i++) {
-            System.out.print(Integer.toHexString(positionChange) + '\t');
-            for (int j = 0; j < rows; j++) {
-                int change = (int) (positionStart + (i * 10) + j);
-                System.out.print((char)change);
-                positionChange = change;
-                System.out.print(' ');
-            }
-            System.out.print('\n');
+        for (int i = 0; i < arrayNumber.length; i++)
+            arrayNumber[i] = bubbleSort(arrayNumber[i]);
+
+        System.out.print("\nМатрица после сортровки: \n");
+        for (int i = 0; i < arrayNumber.length; i++) {
+            System.out.print("|");
+            for (int j = 0; j < arrayNumber[i].length; j++)
+                System.out.print(String.format("%3s ", arrayNumber[i][j]));
+            System.out.print("| \n");
         }
     }
 
-    public static void Task7(String str) {
-        int CountLetters = 0;
-        int LowerLetters = 0;
-        int UpperCaseLetters = 0;
-        int CountDigit = 0;
-        int AnotherSymbols = 0;
-        int AllSymbolsCount = str.length();
-
-        for (int i = 0; i < str.length(); i++) {
-            char sym = str.charAt(i);
-            if (Character.isLetter(sym)) {
-                CountLetters++;
-                if (Character.isUpperCase(sym)) {
-                    UpperCaseLetters++;
-                } else LowerLetters++;
-            }
-//            if (sym >= 'A' && sym <= 'Z') { CountLetters++; UpperCaseLetters++; }
-//            else if (sym >= 'a' && sym <= 'z') { CountLetters++; LowerLetters++; }
-            else if (Character.isDigit(sym)) { CountDigit++; }
-            else AnotherSymbols++;
+    static String task4 (int x1, int y1, int r1, int x2, int y2, int r2) {
+        double lengthBetweenCenterCircles = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+        if (x1 == x2 && y1 == y2 && r1 == r2) {
+            return "Совпадают";
         }
-        System.out.println("Количество букв: " + CountLetters);
-        System.out.println("Количество букв в нижнем регистре: " + LowerLetters);
-        System.out.println("Количество букв в верхнем регистре: " + UpperCaseLetters);
-        System.out.println("Количество арабских цифр: " + CountDigit);
-        System.out.println("Количество других символов: " + AnotherSymbols);
-        System.out.println("Всего символов: " + AllSymbolsCount);
+        else if (lengthBetweenCenterCircles < r1 + r2) return "Пересекаются в двух точках";
+        else if (lengthBetweenCenterCircles == r1 + r2) return "Пересекаются в одной точке";
+        else return "Не пересекаются";
     }
 
-    public static int Task9(String str, String found) {
-        int count = 0;
-        int temp = 0;
-        while((temp = str.indexOf(found, temp)) != -1) {
-            temp++;
-            count++;
-        }
-        return count;
-    }
-
-    public static void Task10(String str) {
-        char[] strChars = str.toCharArray();
-//        for (int i = 0; i < strChars.length; i++) {
-//            char lastSymbol = strChars[strChars.length - 1];
-//            for (int j = strChars.length - 1; j > 0; j--) {
-//                strChars[j] = strChars[j - 1];
-//            }
-//            strChars[0] = lastSymbol;
-//            for (char strChar: strChars) {
-//                System.out.print(strChar);
-//            }
-//            for (int )
-//            System.out.print("\n");
+//    static Colors task5(String color) {
+//        Colors ab = Colors.Blue;
+//        if (ab instanceof Colors) {
+//            System.out.print("Is here");
 //        }
-        for (int pos = 0; pos < strChars.length; pos++) {
-            for (int i = pos; i < strChars.length; i++)
-                System.out.print(strChars[i]);
-            for (int j = 0; j < pos; j++)
-                System.out.print(strChars[j]);
-            System.out.println('\n');
+//    }
+
+    static double integral(double a, double b, Function function) {
+        double area = 0d;
+        double h = 0.001d;
+
+        for (int i = 0; i < (b - a) / h; i++)
+            area += h * function.func(a + i*h);
+
+        return area;
+    }
+
+//    static double CountIntegralFromArrays (double [] argumentsArray, double [] valuesArray) {
+//        double area = 0d;
+//        double h = 0.01d;
+//        for (int i = 0; i < argumentsArray.length; i++) {
+//            area += valuesArray[i] + i*h;
+//        }
+//        return area;
+//    }
+
+    interface Function {
+        public double func (double x);
+    }
+
+    static void task6(int from, int undo) {
+        System.out.print("Task6\n\n");
+        double step = 1;
+        double argument = from;
+        double [] Arguments = new double[undo - from];
+        double [] Values = new double[undo - from];
+
+        System.out.print("+-----------+----------------------------+\n");
+        System.out.print("|     X     |       y(x)                 |\n");
+        System.out.print("+-----------+----------------------------+\n");
+        for (int i = 0; i < undo - from; i++) {
+            Arguments[i] = argument;
+            Values[i] = Math.exp(argument) - Math.pow(argument, 3);
+            String funRound = String.format("%.7f", Values[i]);
+            String argRound = String.format("%.5f", argument);
+            String result = String.format("| %-10s | %-25s |\n", argRound, funRound);
+            System.out.print(result);
+            argument += step;
+        }
+        System.out.print("+-----------+----------------------------+\n");
+        double area = integral(from, undo, x1 -> { return (Math.exp(x1) - Math.pow(x1, 3)); });
+//        double areaArrays = CountIntegralFromArrays(Arguments, Values);
+        System.out.print("Площадь: " + area);
+//        System.out.print("\nПлощадь по массивам: " + areaArrays);
+    }
+
+    static void task7(int number, int base) {
+        System.out.println("\n\nTask7");
+        String numberToBase = "";
+        int baseTemp;
+        int tempCurrentNumberForDivide = number;
+        ArrayList<Integer> numbersToBase = new ArrayList<Integer>();
+        while (tempCurrentNumberForDivide >= 1) {
+            baseTemp = tempCurrentNumberForDivide % base;
+            tempCurrentNumberForDivide = tempCurrentNumberForDivide / base;
+            numbersToBase.add(0, baseTemp);
+        }
+        for (int num : numbersToBase) numberToBase += num;
+        if (Integer.toString(number, base).equals(numberToBase)) System.out.println("Оба метода совпали!");
+        System.out.println("new base number: " + numberToBase);
+    }
+
+    static void task8(int n, int x){
+        int[] a = new int[n+1];
+
+        for (int i = 0; i < a.length; i++) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Введите целое число: ");
+            if (!scanner.hasNextInt()) {
+                System.out.println("error");
+                break;
+            }
+            else a[i] = scanner.nextInt();
+        }
+        for (int i = n-2, P = a[n] * x + a[n - 1]; i!=0 ; i--, P = P * x + a[i])
+            System.out.println(P);
+
+    }
+
+    static void task9() {
+        Pattern p = Pattern.compile("(\\+7|8)(\\s|\\-|\\d|\\()\\d{3}(\\)\\s|\\d|\\s|\\-|\\))\\d{3}(\\s|\\-|\\d)(\\d)($|\\d|\\b)(\\d{2}|\\d\\s\\d{2}|$|\\-\\d{2}|\\s\\d{2}|\\d|\\b)");
+        String text = "+79043781661 +7 904 378 1661 +7 904 378 16 61\n" +
+                "+7-904-378-16-61 +7(904)3781661 +7(904) 378-16 61\n" +
+                "89043781661 8 904 378-16-61\n" +
+                "Круглыми скобками могут быть выделены тол";
+        Matcher m = p.matcher(text);
+        while (m.find()) {
+            int begin = m.start();
+            int end = m.end();
+            System.out.println(text.substring(begin, end));
         }
     }
 
     public static void main(String[] args) {
-        //Task1
-        System.out.println("\nЗадание 1:");
-        Task1();
 
-        //Task2
-        System.out.println("\nЗадание 2:");
-        int [] Array_for_first_task = {-1, -4, -2, 2, 3 ,5};
-        System.out.println(Task2(Array_for_first_task));
 
-        //Task3
-        System.out.println("\nЗадание 3:");
-        System.out.println(Task3(10, 5, 1.0f, 7.0f));
+        Colors as = Colors.Blue;
+        task1();
 
-        //Task4
-//        System.out.println("\nЗадание 4:");
-//        Scanner scan = new Scanner(System.in);
-//        System.out.print("Введите R: ");
-//        int R = scan.nextInt();
-//        System.out.print("Введите r: ");
-//        int r = scan.nextInt();
-//        System.out.println(Task3(R, r, 1.0f, 4.0f));
+        int [][] twoDimArray = {{5,-7,3,-17, -52}, {7,0,-1,12}, {-8,1,2,3, -23}};
+        task2(twoDimArray);
 
-        //Task5
-//        System.out.println("\nЗадание 5:");
-//        System.out.println("Введите целое десятичное число: ");
-//        int number_10 = scan.nextInt();
-//        Task5(number_10);
+        int [][] matrix3 = {{5,-7,3}, {7,0,-1}, {-8,1,2}};
+        task3(matrix3);
 
-        //Task6
-        System.out.println("\nЗадание 6:");
-        int start = 0x0400;
-        Task6(start, 16, 16);
+        System.out.print(task4(0,0,1,3,3,2));
+        task6(4, 8);
 
-        //Task 7
-        System.out.println("\nЗадание 7:" );
-        Task7("aHello eorSOPfkld2519fmskmf902riomf akfm 90 af oaf9msf 9 k≤µ˚˜˜∫˙¥¨");
+        task7(29, 2);
 
-        //Task 8 ready
+        task8(3, 2);
 
-        //Task9
-        System.out.println("\nЗадание 9:");
-        System.out.println(Task9("aaaaaa", "aa"));
+        task9();
 
-        //Task10
-        System.out.println("\nЗадание 10:");
-        Task10("abcd");
+
     }
 }
-
