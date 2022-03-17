@@ -28,7 +28,10 @@ public class Main {
 
         for (int i = 0; i < arrayNumbers.length; i++)
             for (int j = 0; j < arrayNumbers[i].length; j++)
-                if (arrayNumbers[i][j] < maxNegative)  maxNegative = arrayNumbers[i][j];
+                if (maxNegative == 0 && arrayNumbers[i][j] < maxNegative) maxNegative = arrayNumbers[i][j];
+                else if (Math.abs(arrayNumbers[i][j]) < Math.abs(maxNegative) && arrayNumbers[i][j] < 0)  {
+                    maxNegative = arrayNumbers[i][j];
+                }
 
         System.out.print("Max negative: " + maxNegative);
     }
@@ -76,12 +79,14 @@ public class Main {
         else return "Не пересекаются";
     }
 
-//    static Colors task5(String color) {
-//        Colors ab = Colors.Blue;
-//        if (ab instanceof Colors) {
-//            System.out.print("Is here");
-//        }
-//    }
+    public enum DayOfWeek {
+        SUNDAY ("Воскресенье"),
+        MONDAY ("Понедельник"),
+        TUESDAY ("Понедельник"),
+        ;
+
+        DayOfWeek(String воскресенье) {}
+    }
 
     static double integral(double a, double b, Function function) {
         double area = 0d;
@@ -93,43 +98,71 @@ public class Main {
         return area;
     }
 
-//    static double CountIntegralFromArrays (double [] argumentsArray, double [] valuesArray) {
-//        double area = 0d;
-//        double h = 0.01d;
-//        for (int i = 0; i < argumentsArray.length; i++) {
-//            area += valuesArray[i] + i*h;
-//        }
-//        return area;
-//    }
-
     interface Function {
         public double func (double x);
     }
 
+    public static double countArea(double[] arguments, double[] values) {
+        double area = 0, base = arguments[1] - arguments[0];
+        for (double value : values) {
+            area += base * value;
+        }
+        return area;
+    }
+
+    static void task6Test(int from, int to) {
+        System.out.print("Task6\n\n");
+        final double ACCURACITY = 100;
+        final int SIZE = 100;
+        double step = (to - from) / ACCURACITY;
+        double [] Arguments = new double[SIZE];
+        double [] Values = new double[SIZE];
+        double argument = from;
+        System.out.print("+-----------+----------------------------+\n");
+        System.out.print("|     X     |       y(x)                 |\n");
+        System.out.print("+-----------+----------------------------+\n");
+        for (int i = 0; i < SIZE; i++) {
+            Arguments[i] = argument;
+            Values[i] = Math.exp(argument) - Math.pow(argument, 3);
+            String argRound = String.format("%.5f", Arguments[i]);
+            String funRound = String.format("%.7f", Values[i]);
+            String result = String.format("| %-10s | %-25s |\n", argRound, funRound);
+            System.out.print(result);
+            argument = argument + step;
+        }
+        System.out.print("+-----------+----------------------------+\n");
+//        double area = integral(from, undo, x1 -> { return (Math.exp(x1) - Math.pow(x1, 3)); });
+        double areaArrays = countArea(Arguments, Values);
+//        System.out.print("Площадь: " + area);
+        System.out.print("\nПлощадь по массивам: " + Math.abs(areaArrays));
+    }
+
     static void task6(int from, int undo) {
         System.out.print("Task6\n\n");
-        double step = 1;
+        final int ACCURACITY = 100;
+        double step = (undo - from) / ACCURACITY;
         double argument = from;
-        double [] Arguments = new double[undo - from];
-        double [] Values = new double[undo - from];
+        double [] Arguments = new double[ACCURACITY];
+        double [] Values = new double[ACCURACITY];
 
         System.out.print("+-----------+----------------------------+\n");
         System.out.print("|     X     |       y(x)                 |\n");
         System.out.print("+-----------+----------------------------+\n");
-        for (int i = 0; i < undo - from; i++) {
+        for (int i = 0; i < ACCURACITY; i++) {
             Arguments[i] = argument;
-            Values[i] = Math.exp(argument) - Math.pow(argument, 3);
+            Values[i] = Math.exp(Arguments[i]) - Math.pow(Arguments[i], 3);
             String funRound = String.format("%.7f", Values[i]);
-            String argRound = String.format("%.5f", argument);
+            String argRound = String.format("%.5f", Arguments[i]);
             String result = String.format("| %-10s | %-25s |\n", argRound, funRound);
             System.out.print(result);
             argument += step;
         }
+
         System.out.print("+-----------+----------------------------+\n");
-        double area = integral(from, undo, x1 -> { return (Math.exp(x1) - Math.pow(x1, 3)); });
-//        double areaArrays = CountIntegralFromArrays(Arguments, Values);
-        System.out.print("Площадь: " + area);
-//        System.out.print("\nПлощадь по массивам: " + areaArrays);
+//        double area = integral(from, undo, x1 -> { return (Math.exp(x1) - Math.pow(x1, 3)); });
+        double areaArrays = countArea(Arguments, Values);
+//        System.out.print("Площадь: " + area);
+        System.out.print("\nПлощадь по массивам: " + areaArrays);
     }
 
     static void task7(int number, int base) {
@@ -192,7 +225,8 @@ public class Main {
         task3(matrix3);
 
         System.out.print(task4(0,0,1,3,3,2));
-        task6(4, 8);
+//        task6(0, 4);
+        task6Test(0, 4);
 
         task7(29, 2);
 
