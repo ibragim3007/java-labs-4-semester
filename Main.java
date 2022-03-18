@@ -1,5 +1,6 @@
 package com.company;
 
+import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -69,37 +70,26 @@ public class Main {
         }
     }
 
-    static String task4 (int x1, int y1, int r1, int x2, int y2, int r2) {
-        double lengthBetweenCenterCircles = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-        if (x1 == x2 && y1 == y2 && r1 == r2) {
-            return "Совпадают";
-        }
-        else if (lengthBetweenCenterCircles < r1 + r2) return "Пересекаются в двух точках";
-        else if (lengthBetweenCenterCircles == r1 + r2) return "Пересекаются в одной точке";
-        else return "Не пересекаются";
+    enum task4Answers {
+        Equal,
+        SecondCircleNested,
+        FirstCircleNested,
+        Contact1Point,
+        Contact2Points,
+        NoContact
     }
 
-    public enum DayOfWeek {
-        SUNDAY ("Воскресенье"),
-        MONDAY ("Понедельник"),
-        TUESDAY ("Понедельник"),
-        ;
+    public static task4Answers task4(int x1, int y1, int r1, int x2, int y2, int r2) {
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        double distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
-        DayOfWeek(String воскресенье) {}
-    }
-
-    static double integral(double a, double b, Function function) {
-        double area = 0d;
-        double h = 0.001d;
-
-        for (int i = 0; i < (b - a) / h; i++)
-            area += h * function.func(a + i*h);
-
-        return area;
-    }
-
-    interface Function {
-        public double func (double x);
+        if(distance == 0 && r1 == r2) return task4Answers.Equal;
+        else if(r1 >= r2 + distance) return task4Answers.SecondCircleNested;
+        else if(r2 >= r1 + distance) return task4Answers.FirstCircleNested;
+        else if(distance == r1 + r2) return task4Answers.Contact1Point;
+        else if(distance < r1 + r2) return task4Answers.Contact2Points;
+        else return task4Answers.NoContact;
     }
 
     public static double countArea(double[] arguments, double[] values) {
@@ -111,7 +101,7 @@ public class Main {
     }
 
     static void task6Test(int from, int to) {
-        System.out.print("Task6\n\n");
+        System.out.print("\nTask6\n\n");
         final double ACCURACITY = 100;
         final int SIZE = 100;
         double step = (to - from) / ACCURACITY;
@@ -131,38 +121,8 @@ public class Main {
             argument = argument + step;
         }
         System.out.print("+-----------+----------------------------+\n");
-//        double area = integral(from, undo, x1 -> { return (Math.exp(x1) - Math.pow(x1, 3)); });
         double areaArrays = countArea(Arguments, Values);
-//        System.out.print("Площадь: " + area);
         System.out.print("\nПлощадь по массивам: " + Math.abs(areaArrays));
-    }
-
-    static void task6(int from, int undo) {
-        System.out.print("Task6\n\n");
-        final int ACCURACITY = 100;
-        double step = (undo - from) / ACCURACITY;
-        double argument = from;
-        double [] Arguments = new double[ACCURACITY];
-        double [] Values = new double[ACCURACITY];
-
-        System.out.print("+-----------+----------------------------+\n");
-        System.out.print("|     X     |       y(x)                 |\n");
-        System.out.print("+-----------+----------------------------+\n");
-        for (int i = 0; i < ACCURACITY; i++) {
-            Arguments[i] = argument;
-            Values[i] = Math.exp(Arguments[i]) - Math.pow(Arguments[i], 3);
-            String funRound = String.format("%.7f", Values[i]);
-            String argRound = String.format("%.5f", Arguments[i]);
-            String result = String.format("| %-10s | %-25s |\n", argRound, funRound);
-            System.out.print(result);
-            argument += step;
-        }
-
-        System.out.print("+-----------+----------------------------+\n");
-//        double area = integral(from, undo, x1 -> { return (Math.exp(x1) - Math.pow(x1, 3)); });
-        double areaArrays = countArea(Arguments, Values);
-//        System.out.print("Площадь: " + area);
-        System.out.print("\nПлощадь по массивам: " + areaArrays);
     }
 
     static void task7(int number, int base) {
@@ -182,6 +142,7 @@ public class Main {
     }
 
     static void task8(int n, int x){
+        System.out.print("\n\nTask 8");
         int[] a = new int[n+1];
 
         for (int i = 0; i < a.length; i++) {
@@ -199,11 +160,8 @@ public class Main {
     }
 
     static void task9() {
-        Pattern p = Pattern.compile("(\\+7|8)(\\s|\\-|\\d|\\()\\d{3}(\\)\\s|\\d|\\s|\\-|\\))\\d{3}(\\s|\\-|\\d)(\\d)($|\\d|\\b)(\\d{2}|\\d\\s\\d{2}|$|\\-\\d{2}|\\s\\d{2}|\\d|\\b)");
-        String text = "+79043781661 +7 904 378 1661 +7 904 378 16 61\n" +
-                "+7-904-378-16-61 +7(904)3781661 +7(904) 378-16 61\n" +
-                "89043781661 8 904 378-16-61\n" +
-                "Круглыми скобками могут быть выделены тол";
+        Pattern p = Pattern.compile("(([+]7|8)(-| |)?(\\d{3}|[(]\\d{3}[)])(-| |)?\\d{3}(-| |)?\\d{2}(-| |)?\\d{2})|(2|3)(-| |)?\\d{2}(-| |)?\\d{2}(-| |)?\\d{2}");
+        String text = "Мои номера 220-30-40 и 8904-378-16-61 не считая служебных";
         Matcher m = p.matcher(text);
         while (m.find()) {
             int begin = m.start();
@@ -225,7 +183,6 @@ public class Main {
         task3(matrix3);
 
         System.out.print(task4(0,0,1,3,3,2));
-//        task6(0, 4);
         task6Test(0, 4);
 
         task7(29, 2);
@@ -233,7 +190,6 @@ public class Main {
         task8(3, 2);
 
         task9();
-
 
     }
 }
