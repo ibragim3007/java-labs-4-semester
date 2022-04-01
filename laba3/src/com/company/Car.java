@@ -6,6 +6,11 @@ import java.util.regex.Pattern;
 abstract class Car {
 
     private final String REGEX = "^[^авекмнорстух] \\d{3} [^авекмнорстух]{2} (\\d{3}|\\d{2}) RUS";
+    private CarStatus currentStatus;
+
+    public void setCurrentStatus(CarStatus currentStatus) { this.currentStatus = currentStatus; }
+
+    public CarStatus getCurrentStatus() { return currentStatus; }
 
     final private String brand;
     final private int wheels;
