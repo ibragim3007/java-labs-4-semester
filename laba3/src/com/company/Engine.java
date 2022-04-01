@@ -27,11 +27,13 @@ public class Engine {
     }
 
     public void print() {
-        System.out.println("Power: " + this.power);
-        System.out.println("Serial number: " + this.serialNumber);
-        System.out.println("Working Volume: " + this.workingVolume);
-        System.out.println("Consumption: " + this.consumption);
-        System.out.println("Type of fuel: " + this.typeOfFuel);
+        System.out.println("|-----------Engine-----------|");
+        System.out.println("|\tPower: " + this.power);
+        System.out.println("|\tSerial number: " + this.serialNumber);
+        System.out.println("|\tWorking Volume: " + this.workingVolume);
+        System.out.println("|\tConsumption: " + this.consumption);
+        System.out.println("|\tType of fuel: " + this.typeOfFuel);
+        System.out.print("|----------------------------|\n\n");
     }
 
     //setters

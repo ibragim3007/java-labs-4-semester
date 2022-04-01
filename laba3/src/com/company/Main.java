@@ -15,22 +15,24 @@ public class Main {
                 8
         );
 
-	    Car tayota = new Car(
-                "АМО 223 ХУ 424 RUS",
-                "tayota",
-                KindTransport.Passenger,
-                ColorsCar.Red,
-                mx250,
-                4
+        Passenger alex = new Passenger(
+                "tayota", Car.ColorsCar.Red, mx250, 4
         );
 
-         tayota.getEngine().print();
+        Truck kamaz = new Truck("Blaze", Car.ColorsCar.Green, mx250, 6);
+        kamaz.print();
+
+        FireEngine mashinka = new FireEngine("2Е 53КМ 21 SPE","brand", Car.ColorsCar.Blue, mx250, 6);
+//        mashinka.setRegisterCode("2Е 53КМ 21 SPE");
+        mashinka.setQuantityWater(52.2d);
+        mashinka.print();
+
 
         Complex number1 = new Complex(2, 4);
         Complex number2 = new Complex(3, 9);
         final Complex number3 =  ExponentCount(number1);
 
-        number3.print();
+//        number3.print();
 
 
     }
