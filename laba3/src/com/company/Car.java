@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 abstract class Car {
 
-    private final String REGEX = "^[^авекмнорстух] \\d{3} [^авекмнорстух]{2} (\\d{3}|\\d{2}) RUS";
+    private final String REGEX = "[АВЕКМНОПРСТУХ] \\d{3} [АВЕКМНОПРСТУХ]{2} (\\d{3}|\\d{2}) RUS";
     private CarStatus currentStatus;
 
     public void setCurrentStatus(CarStatus currentStatus) { this.currentStatus = currentStatus; }
@@ -15,7 +15,7 @@ abstract class Car {
     final private String brand;
     final private int wheels;
 
-    private String registerCode;
+    protected String registerCode;
     private ColorsCar color;
     private Engine engine;
 

@@ -4,8 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FireEngine extends Car {
-    protected final String REGEX = "\\d[^авекмно] \\d{2}[^авекмно]{2} \\d{2} SPE";
-    private String registerCode;
+    protected final String REGEX = "\\d[АВЕКМНО] \\d{2}[АВЕКМНО]{2} \\d{2} SPE";
     private double quantityWater;
 
     FireEngine(String registerCode, String brand, ColorsCar color, Engine engine, int wheels) {
@@ -29,7 +28,7 @@ public class FireEngine extends Car {
             this.registerCode = registerCode;
             return;
         }
-        System.out.print("Регистрационный номер не верен!");
+        System.out.println("Регистрационный номер не верен!");
     }
 
     public void setQuantityWater(double quantityWater) { this.quantityWater = quantityWater; }
