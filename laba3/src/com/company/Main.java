@@ -1,5 +1,12 @@
 package com.company;
 
+import com.company.car.Car;
+import com.company.carbase.CarBase;
+import com.company.engine.Engine;
+import com.company.firecar.FireEngine;
+import com.company.passenger.Passenger;
+import com.company.truck.Truck;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -34,6 +41,7 @@ public class Main {
         autoBase.toFlight("А 512 АЕ 21 RUS");
 
         autoBase.printOnFlight();
+
 
         autoBase.printOnBase();
 
