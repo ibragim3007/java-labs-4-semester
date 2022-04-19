@@ -3,8 +3,18 @@ package com.company.Graph;
 import java.util.List;
 
 abstract class Graph {
+    private String color = "green";
     void draw(){}
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 }
+
 
 class Grid extends Graph {
     private double scaleX = 1;
@@ -26,9 +36,10 @@ class Grid extends Graph {
     }
 }
 
+
 class Dot extends Graph {
-    private double x;
-    private double y;
+    private final double x;
+    private final double y;
 
     public Dot(int x, int y) {
       this.x = x;
@@ -39,12 +50,12 @@ class Dot extends Graph {
     public double getY() { return y; }
 
     @Override
-    void draw() {
-        System.out.println("(" + this.x + ", " + this.y + ")");
-    }
+    void draw() { System.out.println("(" + this.x + ", " + this.y + ")"); }
 }
 
+
 class Axi extends Graph {
+
     private final Dot A;
     private final Dot B;
 
@@ -60,36 +71,23 @@ class Axi extends Graph {
     }
 }
 
+
 class Curve extends Graph {
 
     private final Dot[] dots;
-    private final Comment comment;
 
-    public Curve (Dot[] dots, String comment) {
-        this.dots = dots;
-        this.comment = new Comment(comment);
-    }
-
-    public Curve(String comment) {
-        this.comment = new Comment(comment);
-        this.dots = new Dot[0];
-    }
+    public Curve (Dot[] dots) { this.dots = dots; }
 
     @Override
-    void draw() {
-        for (Dot dot : this.dots)  System.out.print(dot.getX() + " : " + dot.getY());
-    }
+    void draw() { for (Dot dot : this.dots)  System.out.print(dot.getX() + " : " + dot.getY()); }
 }
 
 
-class Comment extends Curve {
+class Comment extends Graph {
 
     private String comment;
 
-    public Comment(String comment) {
-        super(comment);
-        this.comment = comment;
-    }
+    public Comment(String comment) { this.comment = comment; }
 
     public void printComment () {
         System.out.println(comment);
@@ -98,20 +96,21 @@ class Comment extends Curve {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public void draw() { System.out.println(this.comment); }
 }
+
 
 class Window {
     private final int width = 640;
     private final int height = 480;
 
-
     private List<Curve> curves;
     private List<Axi> axis;
+    private List<Comment> comments;
     private final Grid grid;
 
-    public Window(int AxisQuantity) {
-        this.grid = new Grid();
-    }
+    public Window(int AxisQuantity) { this.grid = new Grid(); }
 
     public Window(List<Curve> curves, List<Axi> axis, Grid grid) {
         this.curves = curves;
@@ -125,25 +124,25 @@ class Window {
     }
 
     public void addCurves (Dot[] dots, String comment) {
-        Curve newCurve = new Curve(dots, comment);
+        Curve newCurve = new Curve(dots);
         curves.add(newCurve);
     }
+
+    public void addComment (String comment) { this.comments.add(new Comment(comment)); }
 
     public void changeScale (double ScaleX, double ScaleY) {
         this.grid.setScaleX(ScaleX);
         this.grid.setScaleY(ScaleY);
     }
 
-
     public void drawPlane () {
         this.grid.draw();
-        for (Axi axi : this.axis)
-            axi.draw();
+        for (Axi axi : this.axis) axi.draw();
     }
 
     public void drawFunctions () {
-        for (Curve curve : this.curves)
-            curve.draw();
+        for (Curve curve : this.curves) curve.draw();
+        for (Comment comment : this.comments) comment.draw();
     }
 
 }
